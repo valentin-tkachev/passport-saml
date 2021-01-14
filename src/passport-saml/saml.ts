@@ -360,7 +360,7 @@ class SAML {
         request['samlp:AuthnRequest']['samlp:Scoping'] = scoping;
       }
 
-      let stringRequest = xmlbuilder.create(request as unknown as Record<string, any>).end();
+      let stringRequest = xmlbuilder.create(request as unknown as Record<string, any>, { encoding: 'utf-8' }).end();
       if (isHttpPostBinding && this.options.privateKey) {
         stringRequest = signAuthnRequestPost(stringRequest, this.options);
       }
@@ -411,7 +411,7 @@ class SAML {
 
     return util.promisify(this.cacheProvider.save).bind(this.cacheProvider)(id, instant)
       .then(function() {
-        return xmlbuilder.create(request as unknown as Record<string, any>).end();
+        return xmlbuilder.create(request as unknown as Record<string, any>, { encoding: 'utf-8' }).end();
       });
   }
 
@@ -439,7 +439,7 @@ class SAML {
       }
     };
 
-    return xmlbuilder.create(request).end();
+    return xmlbuilder.create(request, { encoding: 'utf-8' }).end();
   }
 
   requestToUrl(request: string | null | undefined, response: string | null, operation: string, additionalParameters: querystring.ParsedUrlQuery, callback: (err: Error | null, url?: string | null | undefined) => void) {
@@ -1378,7 +1378,7 @@ class SAML {
       '@Binding': 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
       '@Location': this.getCallbackUrl({})
     };
-    return xmlbuilder.create(metadata as unknown as Record<string, any>).end({ pretty: true, indent: '  ', newline: '\n' });
+    return xmlbuilder.create(metadata as unknown as Record<string, any>, { encoding: 'utf-8' }).end({ pretty: true, indent: '  ', newline: '\n' });
   }
 
   keyToPEM(key: crypto.KeyLike) {
